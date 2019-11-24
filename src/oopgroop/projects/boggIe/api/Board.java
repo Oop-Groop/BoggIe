@@ -14,7 +14,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 /**
@@ -224,13 +223,6 @@ public class Board {
 		// This tile's column and row.
 		final int col, row;
 
-		// This is a circle that is centered in the stackpane (like any other node in a
-		// stackpane, by default). It is used to show the user possible moves for a
-		// selected piece.
-		//
-		// Since nodes can only appear in the scenegraph once, each BoardTile is being
-		// given its own circle to show possible moves.
-		private final Circle showMoveNode = new Circle();
 		{
 
 			/*
@@ -245,23 +237,6 @@ public class Board {
 
 			// The board will receive and calculate the position of all click events.
 			setMouseTransparent(true);
-
-			/*
-			 * Circle Initialization
-			 */
-
-			showMoveNode.setRadius(128);
-			showMoveNode.scaleXProperty().bind(widthProperty().divide(128 * 3));
-			showMoveNode.scaleYProperty().bind(heightProperty().divide(128 * 3));
-
-			showMoveNode.setVisible(false);// This is changed when we show moves.
-			getChildren().add(showMoveNode);
-
-			// The fill and stroke may be different depending on what the node is being
-			// shown for. showCastleMove() shows a greenish circle, while showMove() shows a
-			// grayish circle.
-			showMoveNode.setFill(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.5));
-			showMoveNode.setStroke(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.7));
 
 		}
 
@@ -298,23 +273,6 @@ public class Board {
 		}
 
 		/**
-		 * Hides the {@link #showMoveNode}; this method will hide whatever possible move
-		 * is showing.
-		 */
-		public void hideMove() {
-			showMoveNode.setVisible(false);
-		}
-
-		/**
-		 * @return <code>true</code> if this {@link BoardTile}'s {@link #showMoveNode}
-		 *         is visible. In other words, <code>true</code> if this tile is showing
-		 *         a piece's possible move, <code>false</code> otherwise.
-		 */
-		public boolean isShowingMove() {
-			return showMoveNode.isVisible();
-		}
-
-		/**
 		 * Removes whatever {@link Piece} is on this tile, if any, and returns it. If no
 		 * piece is on this tile, <code>null</code> is returned.
 		 *
@@ -326,8 +284,6 @@ public class Board {
 				getChildren().remove(piece.getShape());
 				piece.col = piece.row = -1;
 			}
-			showMoveNode.setFill(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.5));
-			showMoveNode.setStroke(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.7));
 			return piece;
 		}
 
@@ -340,43 +296,11 @@ public class Board {
 		 */
 		public Piece setPiece(Piece piece) {
 			Piece previous = removePiece();
-			if (isShowingMove())
-				hideMove();
 			getChildren().add(piece.getShape());
 			piece.move(new Position(col, row));
-			showMoveNode.setFill(Color.RED);
-			showMoveNode.setStroke(Color.FIREBRICK);
 			return previous;
 		}
 
-		/**
-		 * Shows a possible castle move for the king. The king can "castle" if neither
-		 * the king, nor the rook that the king will move with, has moved yet, and there
-		 * are no pieces in between them.
-		 */
-		public void showCastleMove() {
-			showMoveNode.setVisible(true);
-			// We should never see Deep Pink because you can't castle if there is a piece in
-			// the way. But with lampshade chess, things are weird, so I've added this in,
-			// just in case. :)
-			showMoveNode.setFill(hasPiece() ? Color.DEEPPINK : Color.OLIVEDRAB);
-		}
-
-		/**
-		 * Shows a possible move. If this tile contains a piece then this method shows a
-		 * red circle, signifying that the selected piece can "kill" the piece on this
-		 * tile.
-		 */
-		public void showMove() {
-			showMoveNode.setVisible(true);
-			if (hasPiece()) {
-				showMoveNode.setFill(Color.RED);
-				showMoveNode.setStroke(Color.FIREBRICK);
-			} else {
-				showMoveNode.setFill(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.5));
-				showMoveNode.setStroke(BLACK_BACKGROUND.interpolate(WHITE_BACKGROUND, 0.7));
-			}
-		}
 	}
 
 	// Board tile colors
