@@ -19,27 +19,43 @@ public class Board extends GridPane {
 	public class Die {
 		private char[] letters;
 		private String letter;
+		private int x, y;
 
-		private Die(String s, int x, int y) {
-			this.letters = s.toCharArray();
+		public int getX() {
+			return x;
 		}
 
-		public String rollDice() {
-			Random rand = new Random();
-			char letter = this.letters[rand.nextInt(6)];
-			if (letter == 'Q') {
-				this.letter = "Qu";
-				return "Qu";
-			}
-			this.letter = String.valueOf(letter);
-			return this.letter;
+		public int getY() {
+			return y;
+		}
+
+		private Die(char[] chars, int x, int y) {
+			this.letters = chars;
+			this.x = x;
+			this.y = y;
+		}
+
+		/**
+		 * <p>
+		 * Rolls this die, as if it were shaken on a board.
+		 * </p>
+		 * <p>
+		 * This method will "select" a random face on this die. Once a letter is
+		 * selected, {@link #getLetter()} will return the selected letter, until the die
+		 * is re-rolled.
+		 * </p>
+		 * 
+		 */
+		public void rollDice() {
+			char letter = this.letters[new Random().nextInt(6)];
+			this.letter = (letter == 'Q' ? "Qu" : String.valueOf(letter));
 		}
 
 		public String getLetter() {
 			return letter;
 		}
 
-		public char[] getLetters() {
+		public char[] getLetterList() {
 			return letters;
 		}
 
