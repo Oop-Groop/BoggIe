@@ -6,21 +6,21 @@ import javafx.scene.layout.GridPane;
 
 public class Board extends GridPane {
 
-	private final Dice[][] board;
+	private final Die[][] board;
 
-	public Dice getTile(int x, int y) {
+	public Die getTile(int x, int y) {
 		return board[x][y];
 	}
 
 	public Board(int length, int height) {
-		board = new Dice[length][height];
+		board = new Die[length][height];
 	}
 
-	public class Dice {
+	public class Die {
 		private char[] letters;
 		private String letter;
 
-		private Dice(String s, int x, int y) {
+		private Die(String s, int x, int y) {
 			this.letters = s.toCharArray();
 		}
 
