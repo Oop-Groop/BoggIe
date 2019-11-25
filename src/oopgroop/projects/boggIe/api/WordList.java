@@ -104,7 +104,7 @@ public class WordList {
      * @param word the word the user gives
      * @return the score of the word
      */
-    public int IsWordInList(String word) throws Exception {
+    public int GetScoreForWord(String word) throws Exception {
         String lowerCaseWord = convertWordsToLowerCase(word)[0];
         WordList startingNode = children[lowerCaseWord.charAt(0) - 97];
 
