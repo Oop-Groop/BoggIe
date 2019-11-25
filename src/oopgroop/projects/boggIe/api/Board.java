@@ -10,6 +10,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -122,6 +123,8 @@ public class Board {
 			prefWidthProperty().bind(root.widthProperty().divide(columnCount));
 			prefHeightProperty().bind(root.heightProperty().divide(rowCount));
 			setBackground(new Background(new BackgroundFill(Color.hsb(Math.random() * 360, 1, 1), null, null)));
+
+			setOnMouseClicked(event -> onClick(this, event));
 		}
 		private char[] letters;
 		private final int x, y;
@@ -164,6 +167,10 @@ public class Board {
 		public char[] getLetterList() {
 			return letters;
 		}
+
+	}
+
+	public void onClick(Die die, MouseEvent event) {
 
 	}
 }
