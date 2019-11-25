@@ -1,4 +1,5 @@
 package oopgroop.projects.boggIe.api;
+
 import java.util.*;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -6,35 +7,38 @@ import java.util.TimerTask;
 /*
  * This is the player class
  */
-public class Player extends TimerTask {
+public class Player {
 	private int score;
-	Set<String> guessedWords = new HashSet<>();
-	//For the timer
-	private Timer myTimer;
-	
-	public void Reminder (int seconds){
-		myTimer.schedule(new Player(), seconds*1000);
+	private final Set<String> guessedWords = new HashSet<>();
+	private final String name;
+	// For the timer
+
+	public String getName() {
+		return name;
 	}
-	
-	public void run() {
-		System.out.println("Time's up!");
-		myTimer.cancel();
+
+	public boolean hasGuessedWord(String word) {
+		return guessedWords.contains(word);
 	}
-	
-	public Player() {
-		this.score = 0;
+
+	public Collection<String> getGuessedWords() {
+		return Collections.unmodifiableCollection(guessedWords);
 	}
-	
+
+	public Player(String name) {
+		this.name = name;
+	}
+
 	public void resetScore() {
 		this.score = 0;
 	}
-	
+
 	public int getScore() {
 		return this.score;
 	}
-	
+
 	public void addScore(int wordScore) {
 		this.score += wordScore;
 	}
-	
+
 }
