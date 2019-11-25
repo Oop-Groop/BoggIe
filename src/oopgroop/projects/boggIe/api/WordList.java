@@ -9,7 +9,7 @@ package oopgroop.projects.boggIe.api;
  */
 public class WordList {
     private WordList[] children;
-    private Integer wordValue = 0;
+    private int wordValue = 0;
 
     // Accepts a list of words to put as children
     public WordList(String... words) {
@@ -19,10 +19,13 @@ public class WordList {
     /**
      * Will check for a word in the list, but will also return the
      * score of the word that the user gives
+     *
+     * if word is not in list, will return 0
+     *
      * @param word the word the user gives
      * @return the score of the word
      */
-    public Integer IsWordInList(String word) {
+    public int IsWordInList(String word) {
         throw new RuntimeException("Not Implemented");
     }
 }
