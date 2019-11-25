@@ -17,12 +17,33 @@ public class WordList {
     public String letter;
 
     /**
-     * Here is the algorithm for creating the trie
+     * How to use:
+     *
+     * WordList list = new WordList()
+     * list.PopulateChildren()
+     * list.AddWordsToList("cat", "dog", "door")
+     *
+     * // or
+     *
+     * String[] listOfWords = new String[]{ "cat", "dog", "door" };
+     * list.PopulateChildren()
+     * list.AddWordsToList(listOfWords)
      */
-    public WordList(String letter) {
+    private WordList(String letter) {
         this.letter = letter;
     }
 
+    /**
+     * This will instantiate the WordList with a root node
+     * that will connect all of the paths together
+     */
+    public WordList() {
+        this.letter = "*";
+    }
+
+    /**
+     * Populates the children of the current node
+     */
     public void PopulateChildren() {
         for (int i = 0; i < 26; i++) {
             WordList currentChild = children[i];
@@ -33,6 +54,10 @@ public class WordList {
         }
     }
 
+    /**
+     * Adds all of the words given to the Word List
+     * @param words words to add
+     */
     public void AddWordsToWordList(String... words) {
         String[] lowerCaseWords = convertWordsToLowerCase(words);
 
@@ -74,7 +99,7 @@ public class WordList {
      * Will check for a word in the list, but will also return the
      * score of the word that the user gives
      *
-     * if word is not in list, will return 0
+     * if word is not in list, will throw an exception that you must catch
      *
      * @param word the word the user gives
      * @return the score of the word

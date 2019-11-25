@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 class WordListTest {
     @Test
     public void ShouldProperlyInputAWord() throws Exception {
-        WordList wordlist = new WordList("*");
+        WordList wordlist = new WordList();
         wordlist.PopulateChildren();
         wordlist.AddWordsToWordList("cat", "dog", "door", "camel");
 
@@ -23,7 +23,7 @@ class WordListTest {
 
     @Test
     public void ShouldProperlyInputAWordWithCaseInsensitivity() throws Exception {
-        WordList wordlist = new WordList("*");
+        WordList wordlist = new WordList();
         wordlist.PopulateChildren();
         wordlist.AddWordsToWordList("cat", "dog", "door", "camel");
 
