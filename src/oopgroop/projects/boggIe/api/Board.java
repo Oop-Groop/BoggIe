@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import javafx.animation.Transition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -18,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class Board {
 
@@ -110,21 +113,57 @@ public class Board {
 		return root;
 	}
 
+	private static final Color GRAY = Color.gray(0, 0.4);
+
 	public class Die extends StackPane {
+		private final Transition highlightTransition = new Transition() {
+
+			@Override
+			protected void interpolate(double frac) {
+				setEffect(frac == 0 ? null : new DropShadow(frac * 10, GRAY));
+			}
+		};
+
 		private final Text text = new Text();
+		private Color backgroundColor = Color.gray(0.05);
+		private Color textFill = Color.gray(0.3);
 		{
 			setAlignment(Pos.CENTER);
 			getChildren().add(text);
 			text.setFont(Font.font("monospace", 80));
+			text.setFill(textFill);
 
 			setMinSize(0, 0);
 			// This makes each tile scale its own size to fit the board correctly. This is
 			// used if the window is resized.
 			prefWidthProperty().bind(root.widthProperty().divide(columnCount));
 			prefHeightProperty().bind(root.heightProperty().divide(rowCount));
-			setBackground(new Background(new BackgroundFill(Color.hsb(Math.random() * 360, 1, 1), null, null)));
+			setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+
+			Color hoverColor = Color.gray(0.3), textFill = Color.hsb(Math.random() * 360, 1, 1);
 
 			setOnMouseClicked(event -> onClick(this, event));
+			Transition hoverTransition = new Transition() {
+				{
+					setCycleCount(1);
+					setCycleDuration(Duration.millis(700));
+				}
+
+				@Override
+				protected void interpolate(double frac) {
+					text.setFill(Die.this.textFill.interpolate(textFill, frac));
+					setBackground(new Background(
+							new BackgroundFill(backgroundColor.interpolate(hoverColor, frac), null, null)));
+				}
+			};
+			setOnMouseEntered(event -> {
+				hoverTransition.setRate(1);
+				hoverTransition.play();
+			});
+			setOnMouseExited(event -> {
+				hoverTransition.setRate(-1);
+				hoverTransition.play();
+			});
 		}
 		private char[] letters;
 		private final int x, y;
