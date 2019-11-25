@@ -12,7 +12,7 @@
       <VBox alignment="CENTER" spacing="20.0" StackPane.alignment="CENTER">
          <children>
             <Text fx:id="playerName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-            <TextField fx:id="input" />
+            <TextField fx:id="input" editable="false" />
             <Button fx:id="submit" mnemonicParsing="false" text="Submit" />
          </children>
          <padding>

@@ -49,8 +49,23 @@ public final class BoggIe extends Application {
 		box.setAlignment(Pos.CENTER);
 
 		thing.playerName.setText("Player 1");
+		thing.input.setOnKeyPressed(event -> {
+
+		});
 
 		primaryStage.setScene(new Scene(box));
+	}
+
+	private void selectLetter(char letter) {
+
+	}
+
+	private void goBack() {
+
+	}
+
+	private void clear() {
+
 	}
 
 }
