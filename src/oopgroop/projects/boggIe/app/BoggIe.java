@@ -27,31 +27,6 @@ public final class BoggIe extends Application {
 
 	private @FXML void initialize() {
 		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
-	}
-
-	public static void main(String[] args) {
-		Application.launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.show();
-		Board board = new Board(4, 4) {
-			@Override
-			public void onClick(Die die, MouseEvent event) {
-				selectLetter(die.getLetter().charAt(0));
-			}
-		};
-
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
-		loader.setController(this);
-		HBox.setHgrow(board.getRoot(), Priority.ALWAYS);
-		board.getRoot().setMinSize(400, 400);
-
-		HBox box = new HBox(board.getRoot(), loader.load());
-		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
-		box.setAlignment(Pos.CENTER);
-
 		playerName.setText("Player 1");
 		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
@@ -90,9 +65,34 @@ public final class BoggIe extends Application {
 					goBack();
 				break;
 			case ENTER:
-
+				submit();
 			}
 		});
+		submit.setOnAction(event -> submit());
+	}
+
+	public static void main(String[] args) {
+		Application.launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		primaryStage.show();
+		Board board = new Board(4, 4) {
+			@Override
+			public void onClick(Die die, MouseEvent event) {
+				selectLetter(die.getLetter().charAt(0));
+			}
+		};
+
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
+		loader.setController(this);
+		HBox.setHgrow(board.getRoot(), Priority.ALWAYS);
+		board.getRoot().setMinSize(400, 400);
+
+		HBox box = new HBox(board.getRoot(), loader.load());
+		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
+		box.setAlignment(Pos.CENTER);
 
 		primaryStage.setScene(new Scene(box));
 	}
