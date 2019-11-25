@@ -9,6 +9,7 @@ import java.util.TimerTask;
 public class Player extends TimerTask {
 	private int score;
 	Set<String> guessedWords = new HashSet<>();
+	
 	//For the timer
 	private Timer myTimer;
 	
@@ -36,5 +37,12 @@ public class Player extends TimerTask {
 	public void addScore(int wordScore) {
 		this.score += wordScore;
 	}
+	public void addWord(String word) {
+		this.guessedWords.add(word);
+	}
+	public Set<String> getWords(){
+		return this.guessedWords;
+	}
+	
 	
 }
