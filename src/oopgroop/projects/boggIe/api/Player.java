@@ -1,8 +1,9 @@
 package oopgroop.projects.boggIe.api;
 
-import java.util.*;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * This is the player class
