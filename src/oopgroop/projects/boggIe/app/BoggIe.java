@@ -50,7 +50,41 @@ public final class BoggIe extends Application {
 
 		thing.playerName.setText("Player 1");
 		thing.input.setOnKeyPressed(event -> {
-
+			switch (event.getCode()) {
+			case A:
+			case B:
+			case C:
+			case D:
+			case E:
+			case F:
+			case G:
+			case H:
+			case I:
+			case J:
+			case K:
+			case L:
+			case M:
+			case N:
+			case O:
+			case P:
+			case Q:
+			case R:
+			case S:
+			case T:
+			case U:
+			case V:
+			case W:
+			case X:
+			case Y:
+			case Z:
+				selectLetter(event.getCode().getName().toLowerCase().charAt(0));
+				break;
+			case BACK_SPACE:
+				if (event.isControlDown())
+					clear();
+				else
+					goBack();
+			}
 		});
 
 		primaryStage.setScene(new Scene(box));
