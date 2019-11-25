@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
@@ -20,6 +21,14 @@ import oopgroop.projects.boggIe.api.Board;
 
 public final class BoggIe extends Application {
 
+	private @FXML Text playerName;
+	private @FXML TextField input;
+	private @FXML Button submit;
+
+	private @FXML void initialize() {
+		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
+	}
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
@@ -27,20 +36,15 @@ public final class BoggIe extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.show();
-		Board board = new Board(4, 4);
-
-		class Thing {// The controller.
-			public @FXML Text playerName;
-			public @FXML TextField input;
-			public @FXML Button submit;
-
-			private @FXML void initialize() {
-				playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
+		Board board = new Board(4, 4) {
+			@Override
+			public void onClick(Die die, MouseEvent event) {
+				selectLetter(die.getLetter().charAt(0));
 			}
-		}
-		Thing thing = new Thing();
+		};
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
-		loader.setController(thing);
+		loader.setController(this);
 		HBox.setHgrow(board.getRoot(), Priority.ALWAYS);
 		board.getRoot().setMinSize(400, 400);
 
@@ -48,8 +52,8 @@ public final class BoggIe extends Application {
 		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
 		box.setAlignment(Pos.CENTER);
 
-		thing.playerName.setText("Player 1");
-		thing.input.setOnKeyPressed(event -> {
+		playerName.setText("Player 1");
+		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
 			case A:
 			case B:
@@ -84,10 +88,17 @@ public final class BoggIe extends Application {
 					clear();
 				else
 					goBack();
+				break;
+			case ENTER:
+
 			}
 		});
 
 		primaryStage.setScene(new Scene(box));
+	}
+
+	private void submit() {
+
 	}
 
 	private void selectLetter(char letter) {
