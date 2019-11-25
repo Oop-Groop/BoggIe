@@ -30,15 +30,15 @@ public class Player {
 	}
 
 	public void resetScore() {
-		this.score = 0;
+		score = 0;
 	}
 
 	public int getScore() {
-		return this.score;
+		return score;
 	}
 
 	public void addScore(int wordScore) {
-		this.score += wordScore;
+		score += wordScore;
 	}
 
 }
