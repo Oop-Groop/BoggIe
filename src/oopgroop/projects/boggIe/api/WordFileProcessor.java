@@ -15,6 +15,8 @@ public class WordFileProcessor {
 			for (final String currentWord : wordsOnLine)
 				words.add(currentWord);
 		}
+		
+		sc.close();
 
 		return words.toArray(new String[words.size()]);
 	}
