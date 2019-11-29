@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class WordFileProcessor {
-    public static String[] ConvertFileToWordList(File wordFile) throws FileNotFoundException {
-        Scanner sc = new Scanner(wordFile);
-        ArrayList<String> words = new ArrayList<>();
+	public static String[] ConvertFileToWordList(final File wordFile) throws FileNotFoundException {
+		final Scanner sc = new Scanner(wordFile);
+		final ArrayList<String> words = new ArrayList<>();
 
-        while (sc.hasNextLine()) {
-            String[] wordsOnLine = sc.nextLine().split(" ");
-            for (String currentWord : wordsOnLine) {
-                words.add(currentWord);
-            }
-        }
+		while (sc.hasNextLine()) {
+			final String[] wordsOnLine = sc.nextLine().split(" ");
+			for (final String currentWord : wordsOnLine)
+				words.add(currentWord);
+		}
 
-        return words.toArray(new String[words.size()]);
-    }
+		return words.toArray(new String[words.size()]);
+	}
 }

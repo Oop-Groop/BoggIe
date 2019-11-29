@@ -14,32 +14,32 @@ public class Player {
 	private final String name;
 	// For the timer
 
-	public String getName() {
-		return name;
+	public Player(final String name) {
+		this.name = name;
 	}
 
-	public boolean hasGuessedWord(String word) {
-		return guessedWords.contains(word);
+	public void addScore(final int wordScore) {
+		score += wordScore;
 	}
 
 	public Collection<String> getGuessedWords() {
 		return Collections.unmodifiableCollection(guessedWords);
 	}
 
-	public Player(String name) {
-		this.name = name;
-	}
-
-	public void resetScore() {
-		score = 0;
+	public String getName() {
+		return name;
 	}
 
 	public int getScore() {
 		return score;
 	}
 
-	public void addScore(int wordScore) {
-		score += wordScore;
+	public boolean hasGuessedWord(final String word) {
+		return guessedWords.contains(word);
+	}
+
+	public void resetScore() {
+		score = 0;
 	}
 
 }

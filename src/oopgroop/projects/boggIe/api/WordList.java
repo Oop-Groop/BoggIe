@@ -1,127 +1,120 @@
 package oopgroop.projects.boggIe.api;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 /**
- * Word list is a trie that contains all the words for the
- * game as well as their scores.
+ * Word list is a trie that contains all the words for the game as well as their
+ * scores.
  *
  * Here is a link of what a Trie is
  *
  * https://www.hackerearth.com/practice/data-structures/advanced-data-structures/trie-keyword-tree/tutorial/
  */
 public class WordList {
-    private WordList[] children = new WordList[26];
-    private int wordValue = 0;
-    public String letter;
+	private final WordList[] children = new WordList[26];
+	private int wordValue = 0;
+	public String letter;
 
-    /**
-     * How to use:
-     *
-     * WordList list = new WordList()
-     * list.PopulateChildren()
-     * list.AddWordsToList("cat", "dog", "door")
-     *
-     * // or
-     *
-     * String[] listOfWords = new String[]{ "cat", "dog", "door" };
-     * list.PopulateChildren()
-     * list.AddWordsToList(listOfWords)
-     */
-    private WordList(String letter) {
-        this.letter = letter;
-    }
+	/**
+	 * This will instantiate the WordList with a root node that will connect all of
+	 * the paths together
+	 */
+	public WordList() {
+		letter = "*";
+	}
 
-    /**
-     * This will instantiate the WordList with a root node
-     * that will connect all of the paths together
-     */
-    public WordList() {
-        this.letter = "*";
-    }
+	/**
+	 * How to use:
+	 *
+	 * WordList list = new WordList() list.PopulateChildren()
+	 * list.AddWordsToList("cat", "dog", "door")
+	 *
+	 * // or
+	 *
+	 * String[] listOfWords = new String[]{ "cat", "dog", "door" };
+	 * list.PopulateChildren() list.AddWordsToList(listOfWords)
+	 */
+	private WordList(final String letter) {
+		this.letter = letter;
+	}
 
-    /**
-     * Populates the children of the current node
-     */
-    public void PopulateChildren() {
-        for (int i = 0; i < 26; i++) {
-            WordList currentChild = children[i];
+	/**
+	 * Adds all of the words given to the Word List
+	 * 
+	 * @param words words to add
+	 */
+	public void AddWordsToWordList(final String... words) {
+		final String[] lowerCaseWords = convertWordsToLowerCase(words);
 
-            if (currentChild == null) {
-                children[i] = new WordList(String.valueOf((char)(i + 97)));
-            }
-        }
-    }
+		for (final String word : lowerCaseWords)
+			addWordToWordList(word, 0);
+	}
 
-    /**
-     * Adds all of the words given to the Word List
-     * @param words words to add
-     */
-    public void AddWordsToWordList(String... words) {
-        String[] lowerCaseWords = convertWordsToLowerCase(words);
+	private void addWordToWordList(final String word, final int currentScore) {
+		if (word.length() == 0) {
+			wordValue = currentScore;
+			return;
+		}
 
-        for (String word : lowerCaseWords) {
-            addWordToWordList(word, 0);
-        }
-    }
+		// Get the child that has that starting letter
+		final char startingLetter = word.charAt(0);
+		final WordList node = children[startingLetter - 97];
+		node.PopulateChildren();
 
-    private void addWordToWordList(String word, int currentScore) {
-        if (word.length() == 0) {
-            this.wordValue = currentScore;
-            return;
-        }
+		node.addWordToWordList(word.substring(1), currentScore + LetterScores.GetScoreForLetter(word.substring(0, 1)));
 
-        // Get the child that has that starting letter
-        char startingLetter = word.charAt(0);
-        WordList node = children[startingLetter - 97];
-        node.PopulateChildren();
+	}
 
-        node.addWordToWordList(word.substring(1), currentScore + LetterScores.GetScoreForLetter(word.substring(0, 1)));
+	private String[] convertWordsToLowerCase(final String... words) {
+		if (words.length == 1) {
+			final String[] lowerCaseWord = new String[] { words[0].toLowerCase() };
 
-    }
+			return lowerCaseWord;
+		}
 
-    private String[] convertWordsToLowerCase(String... words) {
-        if (words.length == 1) {
-            String[] lowerCaseWord = new String[]{words[0].toLowerCase()};
+		for (int i = 0; i < words.length - 1; i++)
+			words[i] = words[i].toLowerCase();
 
-            return lowerCaseWord;
-        }
+		return words;
+	}
 
-        for (int i = 0; i < words.length - 1; i++) {
-            words[i] = words[i].toLowerCase();
-        }
+	/**
+	 * Will check for a word in the list, but will also return the score of the word
+	 * that the user gives
+	 *
+	 * if word is not in list, will throw an exception that you must catch
+	 *
+	 * @param word the word the user gives
+	 * @return the score of the word
+	 */
+	public int GetScoreForWord(final String word) throws Exception {
+		final String lowerCaseWord = convertWordsToLowerCase(word)[0];
+		final WordList startingNode = children[lowerCaseWord.charAt(0) - 97];
 
-        return words;
-    }
+		return search(startingNode, lowerCaseWord.substring(1));
+	}
 
-    /**
-     * Will check for a word in the list, but will also return the
-     * score of the word that the user gives
-     *
-     * if word is not in list, will throw an exception that you must catch
-     *
-     * @param word the word the user gives
-     * @return the score of the word
-     */
-    public int GetScoreForWord(String word) throws Exception {
-        String lowerCaseWord = convertWordsToLowerCase(word)[0];
-        WordList startingNode = children[lowerCaseWord.charAt(0) - 97];
+	/**
+	 * Populates the children of the current node
+	 */
+	public void PopulateChildren() {
+		for (int i = 0; i < 26; i++) {
+			final WordList currentChild = children[i];
 
-        return search(startingNode, lowerCaseWord.substring(1));
-    }
+			if (currentChild == null)
+				children[i] = new WordList(String.valueOf((char) (i + 97)));
+		}
+	}
 
-    private int search(WordList node, String word) throws Exception {
-        if (word.length() == 0)
-            return node.wordValue;
+	private int search(final WordList node, final String word) throws Exception {
+		if (word.length() == 0)
+			return node.wordValue;
 
-        WordList nextNode;
-        try {
-            nextNode = node.children[word.charAt(0) - 97];
-        } catch (NullPointerException e) {
-            throw new Exception("Invalid Word");
-        }
+		WordList nextNode;
+		try {
+			nextNode = node.children[word.charAt(0) - 97];
+		} catch (final NullPointerException e) {
+			throw new Exception("Invalid Word");
+		}
 
-        return search(nextNode, word.substring(1));
-    }
+		return search(nextNode, word.substring(1));
+	}
 }

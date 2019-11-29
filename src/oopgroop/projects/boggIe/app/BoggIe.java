@@ -21,9 +21,22 @@ import oopgroop.projects.boggIe.api.Board;
 
 public final class BoggIe extends Application {
 
+	public static void main(final String[] args) {
+		Application.launch(args);
+	}
+
 	private @FXML Text playerName;
 	private @FXML TextField input;
+
 	private @FXML Button submit;
+
+	private void clear() {
+
+	}
+
+	private void goBack() {
+
+	}
 
 	private @FXML void initialize() {
 		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
@@ -71,26 +84,26 @@ public final class BoggIe extends Application {
 		submit.setOnAction(event -> submit());
 	}
 
-	public static void main(String[] args) {
-		Application.launch(args);
+	private void selectLetter(final char letter) {
+
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.show();
-		Board board = new Board(4, 4) {
+		final Board board = new Board(4, 4) {
 			@Override
-			public void onClick(Die die, MouseEvent event) {
+			public void onClick(final Die die, final MouseEvent event) {
 				selectLetter(die.getLetter().charAt(0));
 			}
 		};
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
+		final FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
 		loader.setController(this);
 		HBox.setHgrow(board.getRoot(), Priority.ALWAYS);
 		board.getRoot().setMinSize(400, 400);
 
-		HBox box = new HBox(board.getRoot(), loader.load());
+		final HBox box = new HBox(board.getRoot(), loader.load());
 		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
 		box.setAlignment(Pos.CENTER);
 
@@ -98,18 +111,6 @@ public final class BoggIe extends Application {
 	}
 
 	private void submit() {
-
-	}
-
-	private void selectLetter(char letter) {
-
-	}
-
-	private void goBack() {
-
-	}
-
-	private void clear() {
 
 	}
 
