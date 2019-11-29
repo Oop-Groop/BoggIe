@@ -7,11 +7,15 @@ import java.util.Scanner;
 
 import javafx.animation.Transition;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -25,18 +29,33 @@ import javafx.util.Duration;
 public class Board {
 
 	public class Die extends StackPane {
-		private final Transition highlightTransition = new Transition() {
+		private BooleanProperty highlightedProperty = new SimpleBooleanProperty();
 
-			@Override
-			protected void interpolate(final double frac) {
-				setEffect(frac == 0 ? null : new DropShadow(frac * 10, GRAY));
-			}
-		};
+		public boolean isHighlighted() {
+			return highlightedProperty.get();
+		}
+
+		public void setHightlighted(boolean highlighted) {
+			highlightedProperty.set(highlighted);
+		}
+
+		public BooleanProperty highlightedProperty() {
+			return highlightedProperty;
+		}
 
 		private final Text text = new Text();
 		private final Color backgroundColor = Color.gray(0.05);
 		private final Color textFill = Color.gray(0.3);
 		{
+			Blend blend = new Blend(BlendMode.DIFFERENCE);
+			ColorInput input = new ColorInput();
+			blend.setTopInput(input);
+			input.setWidth(Double.MAX_VALUE);
+			input.setHeight(Double.MAX_VALUE);
+			input.setPaint(Color.WHITE);
+
+			highlightedProperty.addListener((observable, oldValue, newValue) -> setEffect(newValue ? blend : null));
+
 			setAlignment(Pos.CENTER);
 			getChildren().add(text);
 			text.setFont(Font.font("monospace", 80));
@@ -127,8 +146,6 @@ public class Board {
 		scanner.close();
 
 	}
-
-	private static final Color GRAY = Color.gray(0, 0.4);
 
 	private final GridPane root = new GridPane();
 	// This is the board's width *in pixels*. This is used for layout and resizing

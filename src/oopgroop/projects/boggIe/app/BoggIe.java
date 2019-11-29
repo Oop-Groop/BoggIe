@@ -18,6 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oopgroop.projects.boggIe.api.Board;
+import oopgroop.projects.boggIe.api.Board.Die;
 
 public final class BoggIe extends Application {
 
@@ -29,6 +30,8 @@ public final class BoggIe extends Application {
 	private @FXML TextField input;
 
 	private @FXML Button submit;
+
+	private Board board;
 
 	private void clear() {
 
@@ -85,13 +88,18 @@ public final class BoggIe extends Application {
 	}
 
 	private void selectLetter(final char letter) {
-
+		for (int i = 0; i < board.getRowCount(); i++)
+			for (int j = 0; j < board.getColumnCount(); j++) {
+				Die die = board.getDie(j, i);
+				if (Character.toLowerCase(letter) == Character.toLowerCase(die.getLetter().charAt(0)))
+					die.setHightlighted(true);
+			}
 	}
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.show();
-		final Board board = new Board(4, 4) {
+		board = new Board(4, 4) {
 			@Override
 			public void onClick(final Die die, final MouseEvent event) {
 				selectLetter(die.getLetter().charAt(0));
