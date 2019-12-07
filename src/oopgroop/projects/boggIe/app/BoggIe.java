@@ -33,6 +33,10 @@ public final class BoggIe extends Application {
 
 	private Board board;
 
+	private void recalculate() {
+
+	}
+
 	private void clear() {
 
 	}
@@ -92,7 +96,7 @@ public final class BoggIe extends Application {
 			for (int j = 0; j < board.getColumnCount(); j++) {
 				Die die = board.getDie(j, i);
 				if (Character.toLowerCase(letter) == Character.toLowerCase(die.getLetter().charAt(0)))
-					die.setHightlighted(true);
+					die.setColor(Color.DARKRED);
 			}
 	}
 

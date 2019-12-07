@@ -5,17 +5,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.Transition;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Pos;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -29,32 +27,30 @@ import javafx.util.Duration;
 public class Board {
 
 	public class Die extends StackPane {
-		private BooleanProperty highlightedProperty = new SimpleBooleanProperty();
-
-		public boolean isHighlighted() {
-			return highlightedProperty.get();
-		}
-
-		public void setHightlighted(boolean highlighted) {
-			highlightedProperty.set(highlighted);
-		}
-
-		public BooleanProperty highlightedProperty() {
-			return highlightedProperty;
-		}
 
 		private final Text text = new Text();
-		private final Color backgroundColor = Color.gray(0.05);
-		private final Color textFill = Color.gray(0.3);
-		{
-			Blend blend = new Blend(BlendMode.DIFFERENCE);
-			ColorInput input = new ColorInput();
-			blend.setTopInput(input);
-			input.setWidth(Double.MAX_VALUE);
-			input.setHeight(Double.MAX_VALUE);
-			input.setPaint(Color.WHITE);
+		private final ObjectProperty<Color> backgroundColor = new SimpleObjectProperty<>(Color.gray(.05)),
+				from = new SimpleObjectProperty<>(), hoverColor = new SimpleObjectProperty<>(Color.gray(.3));
 
-			highlightedProperty.addListener((observable, oldValue, newValue) -> setEffect(newValue ? blend : null));
+		private final Color textFill = Color.gray(0.3);
+		private Color textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
+
+		public void setColor(Color color) {
+			if (color == null)
+				color = Color.gray(.05);
+			backgroundColor.set(color);
+			if (!isHover())
+				setBackground(new Background(new BackgroundFill(color, null, null)));
+		}
+
+		public void setHoverColor(Color color) {
+			hoverColor.set(color);
+		}
+
+		{
+
+			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
+			backgroundColor.addListener((observable, oldValue, newValue) -> from.set(oldValue));
 
 			setAlignment(Pos.CENTER);
 			getChildren().add(text);
@@ -66,9 +62,7 @@ public class Board {
 			// used if the window is resized.
 			prefWidthProperty().bind(root.widthProperty().divide(columnCount));
 			prefHeightProperty().bind(root.heightProperty().divide(rowCount));
-			setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
-
-			final Color hoverColor = Color.gray(0.3), textFill = Color.hsb(Math.random() * 360, 1, 1);
+			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
 
 			setOnMouseClicked(event -> onClick(this, event));
 			final Transition hoverTransition = new Transition() {
@@ -79,12 +73,14 @@ public class Board {
 
 				@Override
 				protected void interpolate(final double frac) {
-					text.setFill(Die.this.textFill.interpolate(textFill, frac));
-					setBackground(new Background(
-							new BackgroundFill(backgroundColor.interpolate(hoverColor, frac), null, null)));
+					text.setFill(Die.this.textFill.interpolate(textHoverFill, frac));
+					setBackground(new Background(new BackgroundFill(
+							backgroundColor.get().interpolate(hoverColor.get(), frac * .7), null, null)));
 				}
 			};
 			setOnMouseEntered(event -> {
+				if (hoverTransition.getStatus() == Status.STOPPED)
+					textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
 				hoverTransition.setRate(1);
 				hoverTransition.play();
 			});
