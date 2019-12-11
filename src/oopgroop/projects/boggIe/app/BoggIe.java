@@ -57,7 +57,7 @@ public final class BoggIe extends Application {
 
 	private @FXML void initialize() {
 		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
-		playerName.setText("Player 1");
+		playerName.setText("BoggIe");
 		score.setText("0");
 		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
