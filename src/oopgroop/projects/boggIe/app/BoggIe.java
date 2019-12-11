@@ -32,6 +32,7 @@ public final class BoggIe extends Application {
 	}
 	private WordList words = new WordList();
 	private @FXML Text playerName;
+	private @FXML Text score;
 	private @FXML TextField input;
 	
 	private Player player;
@@ -57,6 +58,7 @@ public final class BoggIe extends Application {
 	private @FXML void initialize() {
 		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
 		playerName.setText("Player 1");
+		score.setText("0");
 		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
 			case A:
@@ -85,7 +87,6 @@ public final class BoggIe extends Application {
 			case X:
 			case Y:
 			case Z:
-				selectLetter(event.getCode().getName().toLowerCase().charAt(0));
 				input.appendText(event.getCode().getName());
 				break;
 			case BACK_SPACE:
@@ -100,18 +101,6 @@ public final class BoggIe extends Application {
 			}
 		});
 		submit.setOnAction(event -> submit());
-	}
-
-	private void selectLetter(final char letter) {
-		for (int i = 0; i < board.getRowCount(); i++)
-			for (int j = 0; j < board.getColumnCount(); j++) {
-				Die die = board.getDie(j, i);
-				if (Character.toLowerCase(letter) == Character.toLowerCase(die.getLetter().charAt(0)))
-					if(die.getColor() != Color.DODGERBLUE)
-						die.setColor(Color.DODGERBLUE);
-					else
-						die.setColor(Color.BLACK);
-			}
 	}
 	
 	@Override
@@ -128,7 +117,6 @@ public final class BoggIe extends Application {
 			@Override
 			public void onClick(final Die die, final MouseEvent event) {
 				input.appendText(die.getLetter());
-				selectLetter(die.getLetter().charAt(0));
 			}
 		};
 
@@ -145,10 +133,24 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
-			System.out.println(words.GetScoreForWord(input.getText()));
+			var score = words.GetScoreForWord(input.getText());
+			this.addToCurrentScore(score);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Adds some value to the score
+	 *
+	 * @param score
+	 */
+	private void addToCurrentScore(int score)
+	{
+		int currentScore = Integer.parseInt(this.score.getText());
+		int newScore = currentScore + score;
+
+		this.score.setText(String.valueOf(newScore));
 	}
 
 }

@@ -30,7 +30,7 @@ public class Board {
 
 		private final Text text = new Text();
 		private final ObjectProperty<Color> backgroundColor = new SimpleObjectProperty<>(Color.gray(.05)),
-				from = new SimpleObjectProperty<>(), hoverColor = new SimpleObjectProperty<>(Color.gray(.3));
+				from = new SimpleObjectProperty<>();
 
 		private boolean visited = false;
 		private final Color textFill = Color.gray(0.3);
@@ -54,10 +54,6 @@ public class Board {
 			return backgroundColor.get();
 		}
 
-		public void setHoverColor(Color color) {
-			hoverColor.set(color);
-		}
-
 		{
 			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
 			backgroundColor.addListener((observable, oldValue, newValue) -> from.set(oldValue));
@@ -75,30 +71,8 @@ public class Board {
 			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
 
 			setOnMouseClicked(event -> onClick(this, event));
-			final Transition hoverTransition = new Transition() {
-				{
-					setCycleCount(1);
-					setCycleDuration(Duration.millis(700));
-				}
-
-				@Override
-				protected void interpolate(final double frac) {
-					text.setFill(Die.this.textFill.interpolate(textHoverFill, frac));
-					setBackground(new Background(new BackgroundFill(
-							backgroundColor.get().interpolate(hoverColor.get(), frac * .7), null, null)));
-				}
-			};
-			setOnMouseEntered(event -> {
-				if (hoverTransition.getStatus() == Status.STOPPED)
-					textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
-				hoverTransition.setRate(1);
-				hoverTransition.play();
-			});
-			setOnMouseExited(event -> {
-				hoverTransition.setRate(-1);
-				hoverTransition.play();
-			});
 		}
+
 		private final char[] letters;
 		private final int x, y;
 
