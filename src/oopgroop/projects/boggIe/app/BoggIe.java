@@ -32,6 +32,7 @@ public final class BoggIe extends Application {
 	}
 	private WordList words = new WordList();
 	private @FXML Text playerName;
+	private @FXML Text score;
 	private @FXML TextField input;
 	
 	private Player player;
@@ -57,6 +58,7 @@ public final class BoggIe extends Application {
 	private @FXML void initialize() {
 		playerName.setFont(Font.font("monospace", FontWeight.BOLD, 20));
 		playerName.setText("Player 1");
+		score.setText("0");
 		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
 			case A:
@@ -131,10 +133,24 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
-			System.out.println(words.GetScoreForWord(input.getText()));
+			var score = words.GetScoreForWord(input.getText());
+			this.addToCurrentScore(score);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Adds some value to the score
+	 *
+	 * @param score
+	 */
+	private void addToCurrentScore(int score)
+	{
+		int currentScore = Integer.parseInt(this.score.getText());
+		int newScore = currentScore + score;
+
+		this.score.setText(String.valueOf(newScore));
 	}
 
 }
