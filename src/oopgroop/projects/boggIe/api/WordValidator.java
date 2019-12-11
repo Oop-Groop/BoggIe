@@ -36,13 +36,12 @@ public class WordValidator {
 		q.add(starting);
 		while(!q.isEmpty()) {
 			Die current = q.remove();
+			current.isVisited();
 			ArrayList<Die> surrounding = board.getSurrounding(current);
-			
 			for(Die d : surrounding) {
 				if((d.getLetter().equals(String.valueOf(wordChars[count]))) && (d.getVisited() == false)) {
 					q.add(d);
-					count++;	
-					d.isVisited();
+					count++;
 				}
 			}
 		}
