@@ -24,6 +24,7 @@ import oopgroop.projects.boggIe.api.Board.Die;
 import oopgroop.projects.boggIe.api.Player;
 import oopgroop.projects.boggIe.api.WordFileProcessor;
 import oopgroop.projects.boggIe.api.WordList;
+import oopgroop.projects.boggIe.api.WordValidator;
 
 public final class BoggIe extends Application {
 
@@ -41,6 +42,7 @@ public final class BoggIe extends Application {
 	private @FXML Button shuffle;
 
 	private Board board;
+	private WordValidator wv;
 
 	private void recalculate() {
 
@@ -122,6 +124,7 @@ public final class BoggIe extends Application {
 				input.appendText(die.getLetter());
 			}
 		};
+		wv = new WordValidator(board);
 
 		final FXMLLoader loader = new FXMLLoader(getClass().getResource("TheUnnamedGUIPart.fxml"));
 		loader.setController(this);
@@ -136,6 +139,12 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
+			if(!wv.isValidWord(input.getText())) {
+				return;
+			}
+			for(Die d : board.getDie(input.getText().charAt(0)))
+				System.out.println(d.getX() + " : " + d.getY());
+			
 			if(!player.hasGuessedWord(input.getText()) && input.getText().length() >= 2) {
 				int score = words.GetScoreForWord(input.getText());
 				player.addGuessedWord(input.getText());
@@ -147,8 +156,9 @@ public final class BoggIe extends Application {
 				return;
 			}
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		catch (Exception e) {
+			System.out.println("Invalid Word");
 		}
 	}
 

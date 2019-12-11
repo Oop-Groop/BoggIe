@@ -39,6 +39,9 @@ public class Board {
 		public boolean getVisited() {
 			return this.visited;
 		}
+		public void resetVisited() {
+			this.visited = false;
+		}
 		
 		public void setColor(Color color) {
 			if (color == null)
@@ -128,21 +131,27 @@ public class Board {
 		ArrayList<Die> dice = new ArrayList<>();
 		for(int i = 0; i < this.getRowCount(); i++) {
 			for(int j = 0; j < this.getColumnCount(); j++) {
-				if(this.getDie(i, j).getLetter().equals(c)) {
-					dice.add(getDie(i, j));
+				if(this.getDie(i, j).getLetter().equals(String.valueOf(c))) {
+					dice.add(this.getDie(i, j));
 				}
 			}
 		}
 		return dice;
 	}
 	
-	public boolean inBounds(Die d) {
-		int dieX = d.getX();
-		int dieY = d.getY();
+	public void resetDie() {
+		for(int i = 0; i < this.getRowCount(); i++) {
+			for(int j = 0; j < this.getColumnCount(); j++) {
+				this.getDie(i, j).resetVisited();
+			}
+		}
+	}
+	
+	public boolean inBounds(int x, int y) {
 		
-		if(dieX < 0 || dieY < 0)
+		if(x < 0 || y < 0)
 			return false;
-		else if(dieX > 3 || dieY > 3)
+		else if(x > 3 || y > 3)
 			return false;
 		else
 			return true;
@@ -154,28 +163,28 @@ public class Board {
 		int dieY = d.getY();
 		ArrayList<Die> dice = new ArrayList<>();
 		
-		if(inBounds(this.getDie(dieX + 1, dieY))) {
+		if(inBounds(dieX + 1, dieY)) {
 			dice.add(this.getDie(dieX + 1, dieY));
 		}
-		if(inBounds(this.getDie(dieX - 1, dieY))) {
+		if(inBounds(dieX - 1, dieY)) {
 			dice.add(this.getDie(dieX - 1, dieY));
 		}
-		if(inBounds(this.getDie(dieX, dieY + 1))) {
+		if(inBounds(dieX, dieY + 1)) {
 			dice.add(this.getDie(dieX, dieY + 1));
 		}
-		if(inBounds(this.getDie(dieX, dieY - 1))) {
+		if(inBounds(dieX, dieY - 1)) {
 			dice.add(this.getDie(dieX, dieY - 1));
 		}
-		if(inBounds(this.getDie(dieX + 1, dieY + 1))) {
+		if(inBounds(dieX + 1, dieY + 1)) {
 			dice.add(this.getDie(dieX + 1, dieY + 1));
 		}
-		if(inBounds(this.getDie(dieX + 1, dieY - 1))) {
+		if(inBounds(dieX + 1, dieY - 1)) {
 			dice.add(this.getDie(dieX + 1, dieY - 1));
 		}
-		if(inBounds(this.getDie(dieX - 1, dieY + 1))) {
+		if(inBounds(dieX - 1, dieY + 1)) {
 			dice.add(this.getDie(dieX - 1, dieY + 1));
 		}
-		if(inBounds(this.getDie(dieX - 1, dieY - 1))) {
+		if(inBounds(dieX - 1, dieY - 1)) {
 			dice.add(this.getDie(dieX - 1, dieY - 1));
 		}
 		return dice;
