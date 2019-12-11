@@ -38,6 +38,7 @@ public final class BoggIe extends Application {
 	private Player player = new Player("Player 1");
 
 	private @FXML Button submit;
+	private @FXML Button shuffle;
 
 	private Board board;
 
@@ -102,6 +103,7 @@ public final class BoggIe extends Application {
 			}
 		});
 		submit.setOnAction(event -> submit());
+		shuffle.setOnAction(event -> shuffle());
 	}
 	
 	@Override
@@ -148,5 +150,9 @@ public final class BoggIe extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void shuffle() {
+		board.shuffle();
 	}
 }

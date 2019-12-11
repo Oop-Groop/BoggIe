@@ -40,7 +40,7 @@ public class WordValidator {
 			ArrayList<Die> surrounding = board.getSurrounding(current);
 			
 			for(Die d : surrounding) {
-				if((d.getLetter().equals(wordChars[count])) && !(d.getVisited() == false)) {
+				if((d.getLetter().equals(wordChars[count])) && (d.getVisited() == false)) {
 					q.add(d);
 					count++;
 				}
