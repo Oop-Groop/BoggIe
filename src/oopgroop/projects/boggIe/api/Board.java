@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.Transition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -22,10 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class Board {
-
 	public class Die extends StackPane {
 
 		private final Text text = new Text();
@@ -33,13 +29,14 @@ public class Board {
 				from = new SimpleObjectProperty<>();
 
 		private boolean visited = false;
+		
 		private final Color textFill = Color.gray(0.3);
 		private Color textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
 		
-		private void isVisited() {
+		public void isVisited() {
 			this.visited = true;
 		}
-		private boolean getVisited() {
+		public boolean getVisited() {
 			return this.visited;
 		}
 		
@@ -127,39 +124,63 @@ public class Board {
 
 	}
 	//gets a list of all of the places that this character is
-	private Die[] getDie(char c) {
-		int count = 0;
-		Die[] dice = new Die[5];
+	public ArrayList<Die> getDie(char c) {
+		ArrayList<Die> dice = new ArrayList<>();
 		for(int i = 0; i < this.getRowCount(); i++) {
 			for(int j = 0; j < this.getColumnCount(); j++) {
 				if(this.getDie(i, j).getLetter().equals(c)) {
-					dice[count] = getDie(i, j);
-					count++;
+					dice.add(getDie(i, j));
 				}
 			}
 		}
 		return dice;
 	}
 	
-	//get the surrounding dice
-	private Die[] getSurrounding(Die d) {
+	public boolean inBounds(Die d) {
 		int dieX = d.getX();
 		int dieY = d.getY();
-		Die[] dice = new Die[8];
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX - 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY + 1);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-	}
-	
-	
-	private boolean checkWord(String word) {
 		
+		if(dieX < 0 || dieY < 0)
+			return false;
+		else if(dieX > 3 || dieY > 3)
+			return false;
+		else
+			return true;
 	}
+	
+	//get the surrounding dice
+	public ArrayList<Die> getSurrounding(Die d) {
+		int dieX = d.getX();
+		int dieY = d.getY();
+		ArrayList<Die> dice = new ArrayList<>();
+		
+		if(inBounds(this.getDie(dieX + 1, dieY))) {
+			dice.add(this.getDie(dieX + 1, dieY));
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY))) {
+			dice.add(this.getDie(dieX - 1, dieY));
+		}
+		if(inBounds(this.getDie(dieX, dieY + 1))) {
+			dice.add(this.getDie(dieX, dieY + 1));
+		}
+		if(inBounds(this.getDie(dieX, dieY - 1))) {
+			dice.add(this.getDie(dieX, dieY - 1));
+		}
+		if(inBounds(this.getDie(dieX + 1, dieY + 1))) {
+			dice.add(this.getDie(dieX + 1, dieY + 1));
+		}
+		if(inBounds(this.getDie(dieX + 1, dieY - 1))) {
+			dice.add(this.getDie(dieX + 1, dieY - 1));
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY + 1))) {
+			dice.add(this.getDie(dieX - 1, dieY + 1));
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY - 1))) {
+			dice.add(this.getDie(dieX - 1, dieY - 1));
+		}
+		return dice;
+	}
+	
 
 	private final GridPane root = new GridPane();
 	// This is the board's width *in pixels*. This is used for layout and resizing

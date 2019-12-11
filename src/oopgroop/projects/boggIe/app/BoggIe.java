@@ -35,9 +35,10 @@ public final class BoggIe extends Application {
 	private @FXML Text score;
 	private @FXML TextField input;
 	
-	private Player player;
+	private Player player = new Player("Player 1");
 
 	private @FXML Button submit;
+	private @FXML Button shuffle;
 
 	private Board board;
 
@@ -87,6 +88,7 @@ public final class BoggIe extends Application {
 			case X:
 			case Y:
 			case Z:
+				
 				input.appendText(event.getCode().getName());
 				break;
 			case BACK_SPACE:
@@ -101,6 +103,7 @@ public final class BoggIe extends Application {
 			}
 		});
 		submit.setOnAction(event -> submit());
+		shuffle.setOnAction(event -> shuffle());
 	}
 	
 	@Override
@@ -126,31 +129,30 @@ public final class BoggIe extends Application {
 		board.getRoot().setMinSize(400, 400);
 
 		final HBox box = new HBox(board.getRoot(), loader.load());
-		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
+		box.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, null, null)));
 		box.setAlignment(Pos.CENTER);
 		primaryStage.setScene(new Scene(box));
 	}
 
 	private void submit() {
 		try {
-			var score = words.GetScoreForWord(input.getText());
-			this.addToCurrentScore(score);
+			if(!player.hasGuessedWord(input.getText()) && input.getText().length() >= 2) {
+				int score = words.GetScoreForWord(input.getText());
+				player.addGuessedWord(input.getText());
+				player.addScore(score);
+				this.score.setText(String.valueOf(player.getScore()));
+				input.clear();
+			}else {
+				input.clear();
+				return;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Adds some value to the score
-	 *
-	 * @param score
-	 */
-	private void addToCurrentScore(int score)
-	{
-		int currentScore = Integer.parseInt(this.score.getText());
-		int newScore = currentScore + score;
-
-		this.score.setText(String.valueOf(newScore));
+	private void shuffle() {
+		board.shuffle();
 	}
-
 }

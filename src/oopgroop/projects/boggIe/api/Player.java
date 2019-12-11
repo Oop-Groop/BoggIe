@@ -37,6 +37,10 @@ public class Player {
 	public boolean hasGuessedWord(final String word) {
 		return guessedWords.contains(word);
 	}
+	
+	public void addGuessedWord(String word) {
+		this.guessedWords.add(word);
+	}
 
 	public void resetScore() {
 		score = 0;
