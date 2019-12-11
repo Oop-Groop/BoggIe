@@ -12,7 +12,7 @@ public class Player {
 	private int score;
 	private final Set<String> guessedWords = new HashSet<>();
 	private final String name;
-	// For the timer
+	
 
 	public Player(final String name) {
 		this.name = name;
