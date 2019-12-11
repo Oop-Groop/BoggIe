@@ -43,10 +43,6 @@ public class Board {
 				setBackground(new Background(new BackgroundFill(color, null, null)));
 		}
 
-		public void setHoverColor(Color color) {
-			hoverColor.set(color);
-		}
-
 		{
 
 			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
@@ -64,7 +60,7 @@ public class Board {
 			prefHeightProperty().bind(root.heightProperty().divide(rowCount));
 			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
 
-			setOnMouseClicked(event -> onClick(this, event));
+//			setOnMouseClicked(event -> onClick(this, event));
 			final Transition hoverTransition = new Transition() {
 				{
 					setCycleCount(1);
@@ -133,23 +129,14 @@ public class Board {
 
 	}
 
-	private final static List<char[]> DICE_CHARS = new ArrayList<>();
-
-	static {
-		final Scanner scanner = new Scanner(Board.class.getResourceAsStream("diceletters"));
-		while (scanner.hasNextLine())
-			DICE_CHARS.add(scanner.nextLine().toCharArray());
-		scanner.close();
-
-	}
-
 	private final GridPane root = new GridPane();
-	// This is the board's width *in pixels*. This is used for layout and resizing
-	// purposes, and is different from the rowCount and columnCount above.
-	protected final ReadOnlyDoubleProperty boardWidth = root.widthProperty(), boardHeight = root.heightProperty();
 
 	private final Die[][] board;
-	private final IntegerProperty columnCount = new SimpleIntegerProperty(0), rowCount = new SimpleIntegerProperty(0);
+	private final IntegerProperty
+			columnCount = new SimpleIntegerProperty(0),
+			rowCount = new SimpleIntegerProperty(0);
+
+	private final static List<char[]> DICE_CHARS = new ArrayList<>();
 
 	{
 		final InvalidationListener listener = __ -> layoutBoard();
@@ -157,28 +144,13 @@ public class Board {
 		rowCount.addListener(listener);
 	}
 
-	public Board() {
-		this(4, 4);
-	}
-
 	public Board(final int columnCount, final int rowCount) {
+		setUpAvailableDiceCharacters();
 		board = new Die[columnCount][rowCount];
 
 		// Initialize width and height properties to initial values.
 		this.columnCount.set(columnCount);
 		this.rowCount.set(rowCount);
-	}
-
-	public final ReadOnlyDoubleProperty boardHeightProperty() {
-		return boardHeight;
-	}
-
-	public final ReadOnlyDoubleProperty boardWidthProperty() {
-		return boardWidth;
-	}
-
-	public final IntegerProperty columnCountProperty() {
-		return columnCount;
 	}
 
 	public final int getColumnCount() {
@@ -205,25 +177,17 @@ public class Board {
 				root.add(board[col][row] = new Die(DICE_CHARS.get(i++ % DICE_CHARS.size()), col, row), col, row);
 	}
 
-	public void onClick(final Die die, final MouseEvent event) {
-
-	}
-
-	public final IntegerProperty rowCountProperty() {
-		return rowCount;
-	}
-
-	public final void setColumnCount(final int columnCount) {
-		this.columnCount.set(columnCount);
-	}
-
-	public final void setRowCount(final int rowCount) {
-		this.rowCount.set(rowCount);
-	}
-
 	public void shuffle() {
 		for (final Die[] d_a : board)
 			for (final Die d : d_a)
 				d.rollDie();
+	}
+
+	private static void setUpAvailableDiceCharacters()
+	{
+		final Scanner scanner = new Scanner(Board.class.getResourceAsStream("diceletters"));
+		while (scanner.hasNextLine())
+			DICE_CHARS.add(scanner.nextLine().toCharArray());
+		scanner.close();
 	}
 }
