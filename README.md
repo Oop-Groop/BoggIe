@@ -7,10 +7,15 @@ This game is a one person Boggle. When the player types in a word and presses EN
 	 Words have to consist of surrounding characters
 	 Different words have different scores
 Example:
+
 X X X
+
 X S X
+
 X X X
+
 S - Starting character
+
 X - Valid surrounding characters
 
 ###Running
