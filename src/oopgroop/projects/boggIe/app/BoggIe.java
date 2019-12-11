@@ -35,7 +35,7 @@ public final class BoggIe extends Application {
 	private @FXML Text score;
 	private @FXML TextField input;
 	
-	private Player player;
+	private Player player = new Player("Player 1");
 
 	private @FXML Button submit;
 
@@ -133,8 +133,17 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
-			var score = words.GetScoreForWord(input.getText());
-			this.addToCurrentScore(score);
+			
+			if(!player.hasGuessedWord(input.getText()) && input.getText().length() >= 2) {
+				int score = words.GetScoreForWord(input.getText());
+				player.addGuessedWord(input.getText());
+				this.addToCurrentScore(score);
+				input.clear();
+			}else {
+				input.clear();
+				return;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

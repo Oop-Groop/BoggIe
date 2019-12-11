@@ -30,13 +30,14 @@ public class Board {
 				from = new SimpleObjectProperty<>();
 
 		private boolean visited = false;
+		
 		private final Color textFill = Color.gray(0.3);
 		private Color textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
 		
-		private void isVisited() {
+		public void isVisited() {
 			this.visited = true;
 		}
-		private boolean getVisited() {
+		public boolean getVisited() {
 			return this.visited;
 		}
 		
@@ -124,21 +125,19 @@ public class Board {
 
 	}
 	//gets a list of all of the places that this character is
-	private Die[] getDie(char c) {
-		int count = 0;
-		Die[] dice = new Die[5];
+	public ArrayList<Die> getDie(char c) {
+		ArrayList<Die> dice = ArrayList<>();
 		for(int i = 0; i < this.getRowCount(); i++) {
 			for(int j = 0; j < this.getColumnCount(); j++) {
 				if(this.getDie(i, j).getLetter().equals(c)) {
-					dice[count] = getDie(i, j);
-					count++;
+					dice.add(getDie(i, j));
 				}
 			}
 		}
 		return dice;
 	}
 	
-	private boolean inBounds(Die d) {
+	public boolean inBounds(Die d) {
 		int dieX = d.getX();
 		int dieY = d.getY();
 		
@@ -151,42 +150,38 @@ public class Board {
 	}
 	
 	//get the surrounding dice
-	private Die[] getSurrounding(Die d) {
+	public ArrayList<Die> getSurrounding(Die d) {
 		int dieX = d.getX();
 		int dieY = d.getY();
-		Die[] dice = new Die[8];
+		ArrayList<Die> dice = new ArrayList<>();
 		
 		if(inBounds(this.getDie(dieX + 1, dieY))) {
-			dice[0] = this.getDie(dieX + 1, dieY);
+			dice.add(this.getDie(dieX + 1, dieY));
 		}
 		if(inBounds(this.getDie(dieX - 1, dieY))) {
-			dice[1] = this.getDie(dieX - 1, dieY);
+			dice.add(this.getDie(dieX - 1, dieY));
 		}
 		if(inBounds(this.getDie(dieX, dieY + 1))) {
-			dice[2] = this.getDie(dieX, dieY + 1);
+			dice.add(this.getDie(dieX, dieY + 1));
 		}
 		if(inBounds(this.getDie(dieX, dieY - 1))) {
-			dice[3] = this.getDie(dieX, dieY - 1);
+			dice.add(this.getDie(dieX, dieY - 1));
 		}
 		if(inBounds(this.getDie(dieX + 1, dieY + 1))) {
-			dice[4] = this.getDie(dieX + 1, dieY + 1);
+			dice.add(this.getDie(dieX + 1, dieY + 1));
 		}
 		if(inBounds(this.getDie(dieX + 1, dieY - 1))) {
-			dice[5] = this.getDie(dieX + 1, dieY - 1);
+			dice.add(this.getDie(dieX + 1, dieY - 1));
 		}
 		if(inBounds(this.getDie(dieX - 1, dieY + 1))) {
-			dice[6] = this.getDie(dieX - 1, dieY + 1);
+			dice.add(this.getDie(dieX - 1, dieY + 1));
 		}
 		if(inBounds(this.getDie(dieX - 1, dieY - 1))) {
-			dice[7] = this.getDie(dieX - 1, dieY - 1);
+			dice.add(this.getDie(dieX - 1, dieY - 1));
 		}
 		return dice;
 	}
 	
-	
-	private void checkWord(String word) {
-		
-	}
 
 	private final GridPane root = new GridPane();
 	// This is the board's width *in pixels*. This is used for layout and resizing
