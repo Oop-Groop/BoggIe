@@ -1,5 +1,7 @@
 package oopgroop.projects.boggIe.app;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,15 +21,20 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import oopgroop.projects.boggIe.api.Board;
 import oopgroop.projects.boggIe.api.Board.Die;
+import oopgroop.projects.boggIe.api.Player;
+import oopgroop.projects.boggIe.api.WordFileProcessor;
+import oopgroop.projects.boggIe.api.WordList;
 
 public final class BoggIe extends Application {
 
 	public static void main(final String[] args) {
 		Application.launch(args);
 	}
-
+	private WordList words = new WordList();
 	private @FXML Text playerName;
 	private @FXML TextField input;
+	
+	private Player player;
 
 	private @FXML Button submit;
 
@@ -38,11 +45,13 @@ public final class BoggIe extends Application {
 	}
 
 	private void clear() {
-
+		input.clear();
 	}
 
 	private void goBack() {
-
+		if(input.getText().length() > 0) {
+			input.setText(input.getText().substring(0, input.getText().length()-1));
+		}
 	}
 
 	private @FXML void initialize() {
@@ -77,12 +86,14 @@ public final class BoggIe extends Application {
 			case Y:
 			case Z:
 				selectLetter(event.getCode().getName().toLowerCase().charAt(0));
+				input.appendText(event.getCode().getName());
 				break;
 			case BACK_SPACE:
-				if (event.isControlDown())
+				if (event.isControlDown()) {
 					clear();
-				else
+				} else {
 					goBack();
+				}
 				break;
 			case ENTER:
 				submit();
@@ -96,16 +107,27 @@ public final class BoggIe extends Application {
 			for (int j = 0; j < board.getColumnCount(); j++) {
 				Die die = board.getDie(j, i);
 				if (Character.toLowerCase(letter) == Character.toLowerCase(die.getLetter().charAt(0)))
-					die.setColor(Color.DARKRED);
+					if(die.getColor() != Color.DODGERBLUE)
+						die.setColor(Color.DODGERBLUE);
+					else
+						die.setColor(Color.BLACK);
 			}
 	}
-
+	
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.show();
+		
+		//adding words to WordList
+		
+		String[] wordList = WordFileProcessor.ConvertFileToWordList(new File("src/oopgroop/projects/boggIe/api/Words.txt"));
+		words.PopulateChildren();
+		words.AddWordsToWordList(wordList);
+		
 		board = new Board(4, 4) {
 			@Override
 			public void onClick(final Die die, final MouseEvent event) {
+				input.appendText(die.getLetter());
 				selectLetter(die.getLetter().charAt(0));
 			}
 		};
@@ -118,12 +140,15 @@ public final class BoggIe extends Application {
 		final HBox box = new HBox(board.getRoot(), loader.load());
 		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
 		box.setAlignment(Pos.CENTER);
-
 		primaryStage.setScene(new Scene(box));
 	}
 
 	private void submit() {
-
+		try {
+			System.out.println(words.GetScoreForWord(input.getText()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

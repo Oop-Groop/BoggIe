@@ -32,9 +32,17 @@ public class Board {
 		private final ObjectProperty<Color> backgroundColor = new SimpleObjectProperty<>(Color.gray(.05)),
 				from = new SimpleObjectProperty<>(), hoverColor = new SimpleObjectProperty<>(Color.gray(.3));
 
+		private boolean visited = false;
 		private final Color textFill = Color.gray(0.3);
 		private Color textHoverFill = Color.hsb(Math.random() * 360, 1, 1);
-
+		
+		private void isVisited() {
+			this.visited = true;
+		}
+		private boolean getVisited() {
+			return this.visited;
+		}
+		
 		public void setColor(Color color) {
 			if (color == null)
 				color = Color.gray(.05);
@@ -42,13 +50,15 @@ public class Board {
 			if (!isHover())
 				setBackground(new Background(new BackgroundFill(color, null, null)));
 		}
+		public Color getColor() {
+			return backgroundColor.get();
+		}
 
 		public void setHoverColor(Color color) {
 			hoverColor.set(color);
 		}
 
 		{
-
 			setBackground(new Background(new BackgroundFill(backgroundColor.get(), null, null)));
 			backgroundColor.addListener((observable, oldValue, newValue) -> from.set(oldValue));
 
@@ -142,6 +152,40 @@ public class Board {
 		scanner.close();
 
 	}
+	//gets a list of all of the places that this character is
+	private Die[] getDie(char c) {
+		int count = 0;
+		Die[] dice = new Die[5];
+		for(int i = 0; i < this.getRowCount(); i++) {
+			for(int j = 0; j < this.getColumnCount(); j++) {
+				if(this.getDie(i, j).getLetter().equals(c)) {
+					dice[count] = getDie(i, j);
+					count++;
+				}
+			}
+		}
+		return dice;
+	}
+	
+	//get the surrounding dice
+	private Die[] getSurrounding(Die d) {
+		int dieX = d.getX();
+		int dieY = d.getY();
+		Die[] dice = new Die[8];
+		dice[0] = this.getDie(dieX + 1, dieY);
+		dice[0] = this.getDie(dieX - 1, dieY);
+		dice[0] = this.getDie(dieX + 1, dieY + 1);
+		dice[0] = this.getDie(dieX + 1, dieY);
+		dice[0] = this.getDie(dieX + 1, dieY);
+		dice[0] = this.getDie(dieX + 1, dieY);
+		dice[0] = this.getDie(dieX + 1, dieY);
+		dice[0] = this.getDie(dieX + 1, dieY);
+	}
+	
+	
+	private boolean checkWord(String word) {
+		
+	}
 
 	private final GridPane root = new GridPane();
 	// This is the board's width *in pixels*. This is used for layout and resizing
@@ -206,8 +250,9 @@ public class Board {
 	}
 
 	public void onClick(final Die die, final MouseEvent event) {
-
+		
 	}
+	
 
 	public final IntegerProperty rowCountProperty() {
 		return rowCount;
