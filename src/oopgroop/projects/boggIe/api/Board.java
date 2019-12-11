@@ -142,7 +142,7 @@ public class Board {
 	}
 	
 	//get the surrounding dice
-	private void getSurrounding(Die d) {
+	private Die[] getSurrounding(Die d) {
 		int dieX = d.getX();
 		int dieY = d.getY();
 		Die[] dice = new Die[8];
@@ -157,7 +157,7 @@ public class Board {
 	}
 	
 	
-	private void checkWord(String word) {
+	private boolean checkWord(String word) {
 		
 	}
 
