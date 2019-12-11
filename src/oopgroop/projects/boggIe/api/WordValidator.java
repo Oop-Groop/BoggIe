@@ -6,5 +6,4 @@ public class WordValidator {
 	public WordValidator(Board board) {
 		this.board = board;
 	}
-	public boolean isValidWord
 }

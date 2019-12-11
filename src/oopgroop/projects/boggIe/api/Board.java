@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.Transition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -22,7 +20,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class Board {
 
@@ -187,7 +184,7 @@ public class Board {
 	}
 	
 	
-	private boolean checkWord(String word) {
+	private void checkWord(String word) {
 		
 	}
 
