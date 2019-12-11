@@ -133,11 +133,11 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
-			
 			if(!player.hasGuessedWord(input.getText()) && input.getText().length() >= 2) {
 				int score = words.GetScoreForWord(input.getText());
 				player.addGuessedWord(input.getText());
-				this.addToCurrentScore(score);
+				player.addScore(score);
+				this.score.setText(String.valueOf(player.getScore()));
 				input.clear();
 			}else {
 				input.clear();
@@ -148,18 +148,4 @@ public final class BoggIe extends Application {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * Adds some value to the score
-	 *
-	 * @param score
-	 */
-	private void addToCurrentScore(int score)
-	{
-		int currentScore = Integer.parseInt(this.score.getText());
-		int newScore = currentScore + score;
-
-		this.score.setText(String.valueOf(newScore));
-	}
-
 }
