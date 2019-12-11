@@ -87,6 +87,7 @@ public final class BoggIe extends Application {
 			case X:
 			case Y:
 			case Z:
+				
 				input.appendText(event.getCode().getName());
 				break;
 			case BACK_SPACE:
@@ -126,7 +127,7 @@ public final class BoggIe extends Application {
 		board.getRoot().setMinSize(400, 400);
 
 		final HBox box = new HBox(board.getRoot(), loader.load());
-		box.setBackground(new Background(new BackgroundFill(Color.gray(0.2), null, null)));
+		box.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, null, null)));
 		box.setAlignment(Pos.CENTER);
 		primaryStage.setScene(new Scene(box));
 	}
