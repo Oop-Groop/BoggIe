@@ -17,18 +17,12 @@ public class WordValidator {
 	
 	public boolean isValidWord(String word) throws Exception {
 		char currChar = word.charAt(0);
-		
-//		if(currChar.equals(null))
-//			System.out.println("Char Null");
-//		else if(board == null)
-//			System.out.println("Board Null");
 		ArrayList<Die> dice = board.getDie(currChar);
 		if(dice.size() == 0) {
 			throw new Exception("Character not in board");
 		}
 		boolean inBoard = false;
 		for(Die d : dice) {
-			//System.out.println(d.getX() + " : " + d.getY() + " -> " + inBoard);
 			if(BFS(d, word)) {
 				inBoard = true;
 			}
@@ -51,7 +45,6 @@ public class WordValidator {
 				ArrayList<Die> surrounding = board.getSurrounding(current);
 				for(Die d : surrounding) {
 					Character dieChar = d.getLetter().charAt(0);
-					System.out.println(current.getLetter() + " -> " + dieChar + " = " + (dieChar.equals(currChar)));
 					if((dieChar.equals(currChar)) && (d.getVisited() == false) && !q.contains(d)) {
 						q.add(d);
 						found = true;
@@ -59,13 +52,11 @@ public class WordValidator {
 				}
 				if(!found && q.isEmpty()) {
 					board.resetDie();
-					System.out.println(word + " -> " + "False");
 					return false;
 				}
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {}
 		board.resetDie();
-		System.out.println(word + " -> " + "True");
 		return true;
 	}
 	
@@ -75,8 +66,6 @@ public class WordValidator {
 		for(int i = 1; i < wordChars.length; i++) {
 			newChars[i-1] = wordChars[i];
 		}
-		System.out.println(wordChars);
-		System.out.println(newChars);
 		return newChars;
 	}
 }

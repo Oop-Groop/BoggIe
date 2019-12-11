@@ -140,10 +140,10 @@ public final class BoggIe extends Application {
 	private void submit() {
 		try {
 			if(!wv.isValidWord(input.getText())) {
+				System.out.println(input.getText() + " -> False");
 				return;
 			}
-			for(Die d : board.getDie(input.getText().charAt(0)))
-				System.out.println(d.getX() + " : " + d.getY());
+			System.out.println(input.getText() + " -> True");
 			
 			if(!player.hasGuessedWord(input.getText()) && input.getText().length() >= 2) {
 				int score = words.GetScoreForWord(input.getText());
@@ -155,14 +155,14 @@ public final class BoggIe extends Application {
 				input.clear();
 				return;
 			}
-			
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			System.out.println("Invalid Word");
 		}
 	}
 
 	private void shuffle() {
 		board.shuffle();
+		player.resetScore();
+		this.score.setText(String.valueOf(player.getScore()));
 	}
 }
