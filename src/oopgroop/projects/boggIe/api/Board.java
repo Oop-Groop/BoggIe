@@ -22,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class Board {
-
 	public class Die extends StackPane {
 
 		private final Text text = new Text();
@@ -126,7 +125,7 @@ public class Board {
 	}
 	//gets a list of all of the places that this character is
 	public ArrayList<Die> getDie(char c) {
-		ArrayList<Die> dice = ArrayList<>();
+		ArrayList<Die> dice = new ArrayList<>();
 		for(int i = 0; i < this.getRowCount(); i++) {
 			for(int j = 0; j < this.getColumnCount(); j++) {
 				if(this.getDie(i, j).getLetter().equals(c)) {
