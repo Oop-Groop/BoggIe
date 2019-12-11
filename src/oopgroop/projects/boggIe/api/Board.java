@@ -141,19 +141,49 @@ public class Board {
 		return dice;
 	}
 	
+	private boolean inBounds(Die d) {
+		int dieX = d.getX();
+		int dieY = d.getY();
+		
+		if(dieX < 0 || dieY < 0)
+			return false;
+		else if(dieX > 3 || dieY > 3)
+			return false;
+		else
+			return true;
+	}
+	
 	//get the surrounding dice
 	private Die[] getSurrounding(Die d) {
 		int dieX = d.getX();
 		int dieY = d.getY();
 		Die[] dice = new Die[8];
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX - 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY + 1);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
-		dice[0] = this.getDie(dieX + 1, dieY);
+		
+		if(inBounds(this.getDie(dieX + 1, dieY))) {
+			dice[0] = this.getDie(dieX + 1, dieY);
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY))) {
+			dice[1] = this.getDie(dieX - 1, dieY);
+		}
+		if(inBounds(this.getDie(dieX, dieY + 1))) {
+			dice[2] = this.getDie(dieX, dieY + 1);
+		}
+		if(inBounds(this.getDie(dieX, dieY - 1))) {
+			dice[3] = this.getDie(dieX, dieY - 1);
+		}
+		if(inBounds(this.getDie(dieX + 1, dieY + 1))) {
+			dice[4] = this.getDie(dieX + 1, dieY + 1);
+		}
+		if(inBounds(this.getDie(dieX + 1, dieY - 1))) {
+			dice[5] = this.getDie(dieX + 1, dieY - 1);
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY + 1))) {
+			dice[6] = this.getDie(dieX - 1, dieY + 1);
+		}
+		if(inBounds(this.getDie(dieX - 1, dieY - 1))) {
+			dice[7] = this.getDie(dieX - 1, dieY - 1);
+		}
+		return dice;
 	}
 	
 	
