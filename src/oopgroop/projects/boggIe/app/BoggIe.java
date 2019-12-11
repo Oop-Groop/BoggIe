@@ -119,7 +119,8 @@ public final class BoggIe extends Application {
 		primaryStage.show();
 		
 		//adding words to WordList
-		String[] wordList = WordFileProcessor.ConvertFileToWordList(new File("C:\\Users\\bsi\\eclipse-workspace\\BoggIe\\src\\oopgroop\\projects\\boggIe\\api\\Words.txt"));
+		
+		String[] wordList = WordFileProcessor.ConvertFileToWordList(new File("src/oopgroop/projects/boggIe/api/Words.txt"));
 		words.PopulateChildren();
 		words.AddWordsToWordList(wordList);
 		
@@ -144,7 +145,6 @@ public final class BoggIe extends Application {
 
 	private void submit() {
 		try {
-			player.add
 			System.out.println(words.GetScoreForWord(input.getText()));
 		} catch (Exception e) {
 			e.printStackTrace();
