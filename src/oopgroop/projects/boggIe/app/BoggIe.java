@@ -64,44 +64,19 @@ public final class BoggIe extends Application {
 		score.setText("0");
 		input.setOnKeyPressed(event -> {
 			switch (event.getCode()) {
-			case A:
-			case B:
-			case C:
-			case D:
-			case E:
-			case F:
-			case G:
-			case H:
-			case I:
-			case J:
-			case K:
-			case L:
-			case M:
-			case N:
-			case O:
-			case P:
-			case Q:
-			case R:
-			case S:
-			case T:
-			case U:
-			case V:
-			case W:
-			case X:
-			case Y:
-			case Z:
-				
-				input.appendText(event.getCode().getName());
-				break;
-			case BACK_SPACE:
-				if (event.isControlDown()) {
-					clear();
-				} else {
-					goBack();
-				}
-				break;
-			case ENTER:
-				submit();
+				case BACK_SPACE:
+					if (event.isControlDown()) {
+						clear();
+					} else {
+						goBack();
+					}
+					break;
+				case ENTER:
+					submit();
+					break;
+				default:
+					input.appendText(event.getCode().getName());
+					break;
 			}
 		});
 		submit.setOnAction(event -> submit());
